@@ -2547,7 +2547,6 @@ class PlayState extends MusicBeatState
 		}
 
 		var placement:Float = FlxG.width * 0.35;
-		var rating:FlxSprite = new FlxSprite();
 		var score:Int = 350;
 
 		//tryna do MS based judgment due to popular demand
@@ -2584,6 +2583,7 @@ class PlayState extends MusicBeatState
 		{
 			if (!ClientPrefs.data.hideHud && showRating)
 			{
+				var rating:FlxSprite = new FlxSprite();
 				rating.loadGraphic(Paths.image(uiFolder + daRating.image + uiPostfix));
 				rating.screenCenter();
 				rating.x = placement - 40;
