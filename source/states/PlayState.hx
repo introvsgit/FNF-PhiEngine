@@ -1798,6 +1798,7 @@ class PlayState extends MusicBeatState
 					if(startedCountdown)
 					{
 						var fakeCrochet:Float = (60 / SONG.bpm) * 1000;
+						var arrayToHit:Array<Note> = [];
 						notes.forEachAlive(function(daNote:Note)
 						{
 							var strumGroup:FlxTypedGroup<StrumNote> = playerStrums;
@@ -1809,7 +1810,7 @@ class PlayState extends MusicBeatState
 							if(daNote.mustPress)
 							{
 								if(cpuControlled && !daNote.blockHit && daNote.canBeHit && (daNote.isSustainNote || daNote.strumTime <= Conductor.songPosition))
-									goodNoteHit(daNote);
+									arrayToHit.push(daNote);
 							}
 							else if (daNote.wasGoodHit && !daNote.hitByOpponent && !daNote.ignoreNote)
 								opponentNoteHit(daNote);
@@ -1826,6 +1827,8 @@ class PlayState extends MusicBeatState
 								invalidateNote(daNote);
 							}
 						});
+						
+						for (daNote in arrayToHit) goodNoteHit(daNote);
 					}
 					else
 					{
