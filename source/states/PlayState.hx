@@ -2634,6 +2634,7 @@ class PlayState extends MusicBeatState
 					comboSpr.setGraphicSize(Std.int(comboSpr.width * daPixelZoom * 0.85));
 				
 				comboSpr.updateHitbox();
+				comboGroup.add(comboSpr);
 	
 				FlxTween.tween(comboSpr, {alpha: 0}, 0.2 / playbackRate, {
 					onComplete: function(tween:FlxTween)
@@ -2646,8 +2647,6 @@ class PlayState extends MusicBeatState
 
 			var daLoop:Int = 0;
 			var xThing:Float = 0;
-			if (showCombo)
-				comboGroup.add(comboSpr);
 
 			var separatedScore:String = Std.string(combo).lpad('0', 3);
 			for (i in 0...separatedScore.length)
