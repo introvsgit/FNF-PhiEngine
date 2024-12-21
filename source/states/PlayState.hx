@@ -2603,18 +2603,22 @@ class PlayState extends MusicBeatState
 				rating.updateHitbox();
 				
 				FlxTween.tween(rating, {alpha: 0}, 0.2 / playbackRate, {
-					startDelay: Conductor.crochet * 0.001 / playbackRate
+					startDelay: Conductor.crochet * 0.001 / playbackRate,
+					
+					onComplete: function(tween:FlxTween)
+					{
+						rating.destroy();
+					},
 				});
 			}
 
-			if () 
+			if ((!ClientPrefs.data.hideHud && showCombo)) 
 			{
 				var comboSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.image(uiFolder + 'combo' + uiPostfix));
 				comboSpr.screenCenter();
 				comboSpr.x = placement;
 				comboSpr.acceleration.y = FlxG.random.int(200, 300) * playbackRate * playbackRate;
 				comboSpr.velocity.y -= FlxG.random.int(140, 160) * playbackRate;
-				comboSpr.visible = (!ClientPrefs.data.hideHud && showCombo);
 				comboSpr.x += ClientPrefs.data.comboOffset[0];
 				comboSpr.y -= ClientPrefs.data.comboOffset[1];
 				comboSpr.antialiasing = antialias;
@@ -2635,7 +2639,6 @@ class PlayState extends MusicBeatState
 					onComplete: function(tween:FlxTween)
 					{
 						comboSpr.destroy();
-						rating.destroy();
 					},
 					startDelay: Conductor.crochet * 0.002 / playbackRate
 				});
