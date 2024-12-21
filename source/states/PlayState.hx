@@ -2599,42 +2599,47 @@ class PlayState extends MusicBeatState
 					rating.setGraphicSize(Std.int(rating.width * 0.7));
 				else
 					rating.setGraphicSize(Std.int(rating.width * daPixelZoom * 0.85));
-					comboSpr.setGraphicSize(Std.int(comboSpr.width * daPixelZoom * 0.85));
-				}
+				
+				rating.updateHitbox();
 				
 				FlxTween.tween(rating, {alpha: 0}, 0.2 / playbackRate, {
 					startDelay: Conductor.crochet * 0.001 / playbackRate
 				});
 			}
 
-			var comboSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.image(uiFolder + 'combo' + uiPostfix));
-			comboSpr.screenCenter();
-			comboSpr.x = placement;
-			comboSpr.acceleration.y = FlxG.random.int(200, 300) * playbackRate * playbackRate;
-			comboSpr.velocity.y -= FlxG.random.int(140, 160) * playbackRate;
-			comboSpr.visible = (!ClientPrefs.data.hideHud && showCombo);
-			comboSpr.x += ClientPrefs.data.comboOffset[0];
-			comboSpr.y -= ClientPrefs.data.comboOffset[1];
-			comboSpr.antialiasing = antialias;
-			comboSpr.y += 60;
-			comboSpr.velocity.x += FlxG.random.int(1, 10) * playbackRate;
-			comboGroup.add(rating);
-			
-			comboSpr.x = xThing + 50;
-
-			FlxTween.tween(comboSpr, {alpha: 0}, 0.2 / playbackRate, {
-				onComplete: function(tween:FlxTween)
-				{
-					comboSpr.destroy();
-					rating.destroy();
-				},
-				startDelay: Conductor.crochet * 0.002 / playbackRate
-			});
-
-			
-
-			comboSpr.updateHitbox();
-			rating.updateHitbox();
+			if () 
+			{
+				var comboSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.image(uiFolder + 'combo' + uiPostfix));
+				comboSpr.screenCenter();
+				comboSpr.x = placement;
+				comboSpr.acceleration.y = FlxG.random.int(200, 300) * playbackRate * playbackRate;
+				comboSpr.velocity.y -= FlxG.random.int(140, 160) * playbackRate;
+				comboSpr.visible = (!ClientPrefs.data.hideHud && showCombo);
+				comboSpr.x += ClientPrefs.data.comboOffset[0];
+				comboSpr.y -= ClientPrefs.data.comboOffset[1];
+				comboSpr.antialiasing = antialias;
+				comboSpr.y += 60;
+				comboSpr.velocity.x += FlxG.random.int(1, 10) * playbackRate;
+				comboGroup.add(rating);
+				
+				comboSpr.x = xThing + 50;
+				
+				if (!PlayState.isPixelStage)
+					comboSpr.setGraphicSize(Std.int(comboSpr.width * 0.7));
+				else
+					comboSpr.setGraphicSize(Std.int(comboSpr.width * daPixelZoom * 0.85));
+				
+				comboSpr.updateHitbox();
+	
+				FlxTween.tween(comboSpr, {alpha: 0}, 0.2 / playbackRate, {
+					onComplete: function(tween:FlxTween)
+					{
+						comboSpr.destroy();
+						rating.destroy();
+					},
+					startDelay: Conductor.crochet * 0.002 / playbackRate
+				});
+			}
 
 			var daLoop:Int = 0;
 			var xThing:Float = 0;
