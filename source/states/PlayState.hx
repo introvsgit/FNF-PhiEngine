@@ -2582,17 +2582,30 @@ class PlayState extends MusicBeatState
 
 		if (ClientPrefs.data.popUpRating)
 		{
-			rating.loadGraphic(Paths.image(uiFolder + daRating.image + uiPostfix));
-			rating.screenCenter();
-			rating.x = placement - 40;
-			rating.y -= 60;
-			rating.acceleration.y = 550 * playbackRate * playbackRate;
-			rating.velocity.y -= FlxG.random.int(140, 175) * playbackRate;
-			rating.velocity.x -= FlxG.random.int(0, 10) * playbackRate;
-			rating.visible = (!ClientPrefs.data.hideHud && showRating);
-			rating.x += ClientPrefs.data.comboOffset[0];
-			rating.y -= ClientPrefs.data.comboOffset[1];
-			rating.antialiasing = antialias;
+			if (!ClientPrefs.data.hideHud && showRating)
+			{
+				rating.loadGraphic(Paths.image(uiFolder + daRating.image + uiPostfix));
+				rating.screenCenter();
+				rating.x = placement - 40;
+				rating.y -= 60;
+				rating.acceleration.y = 550 * playbackRate * playbackRate;
+				rating.velocity.y -= FlxG.random.int(140, 175) * playbackRate;
+				rating.velocity.x -= FlxG.random.int(0, 10) * playbackRate;
+				rating.x += ClientPrefs.data.comboOffset[0];
+				rating.y -= ClientPrefs.data.comboOffset[1];
+				rating.antialiasing = antialias;
+				
+				if (!PlayState.isPixelStage)
+					rating.setGraphicSize(Std.int(rating.width * 0.7));
+				else
+					rating.setGraphicSize(Std.int(rating.width * daPixelZoom * 0.85));
+					comboSpr.setGraphicSize(Std.int(comboSpr.width * daPixelZoom * 0.85));
+				}
+				
+				FlxTween.tween(rating, {alpha: 0}, 0.2 / playbackRate, {
+					startDelay: Conductor.crochet * 0.001 / playbackRate
+				});
+			}
 
 			var comboSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.image(uiFolder + 'combo' + uiPostfix));
 			comboSpr.screenCenter();
@@ -2606,17 +2619,19 @@ class PlayState extends MusicBeatState
 			comboSpr.y += 60;
 			comboSpr.velocity.x += FlxG.random.int(1, 10) * playbackRate;
 			comboGroup.add(rating);
+			
+			comboSpr.x = xThing + 50;
 
-			if (!PlayState.isPixelStage)
-			{
-				rating.setGraphicSize(Std.int(rating.width * 0.7));
-				comboSpr.setGraphicSize(Std.int(comboSpr.width * 0.7));
-			}
-			else
-			{
-				rating.setGraphicSize(Std.int(rating.width * daPixelZoom * 0.85));
-				comboSpr.setGraphicSize(Std.int(comboSpr.width * daPixelZoom * 0.85));
-			}
+			FlxTween.tween(comboSpr, {alpha: 0}, 0.2 / playbackRate, {
+				onComplete: function(tween:FlxTween)
+				{
+					comboSpr.destroy();
+					rating.destroy();
+				},
+				startDelay: Conductor.crochet * 0.002 / playbackRate
+			});
+
+			
 
 			comboSpr.updateHitbox();
 			rating.updateHitbox();
@@ -2662,19 +2677,6 @@ class PlayState extends MusicBeatState
 				if (numScore.x > xThing)
 					xThing = numScore.x;
 			}
-			comboSpr.x = xThing + 50;
-			FlxTween.tween(rating, {alpha: 0}, 0.2 / playbackRate, {
-				startDelay: Conductor.crochet * 0.001 / playbackRate
-			});
-
-			FlxTween.tween(comboSpr, {alpha: 0}, 0.2 / playbackRate, {
-				onComplete: function(tween:FlxTween)
-				{
-					comboSpr.destroy();
-					rating.destroy();
-				},
-				startDelay: Conductor.crochet * 0.002 / playbackRate
-			});
 		}
 	}
 
